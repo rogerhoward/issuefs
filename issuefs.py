@@ -7,7 +7,6 @@ import os
 import sys
 import errno
 import click
-import hashlib
 import keyring
 
 from github3 import login
@@ -41,10 +40,6 @@ class IssueFS(Operations):
         issue_contents = '%s \n %s' % (issue.title, issue.body)
         if debug: print '_contents issue_contents: %s' % (issue_contents)
         return issue_contents
-
-    def _hash(self, value):
-        return hashlib.md5(value).hexdigest()
-
 
     # Filesystem methods
     # ==================
