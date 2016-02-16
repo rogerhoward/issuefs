@@ -45,27 +45,34 @@ class IssueFS(Operations):
     # ==================
 
     def access(self, path, mode):
-        # if debug: print 'access mode: %s, path: %s ' % (mode, path)
+        if debug: print 'access mode: %s, path: %s ' % (mode, path)
+        # Mock
         if False:
             raise FuseOSError(errno.EACCES)
 
     def chmod(self, path, mode):
         if debug: print 'chmod mode: %s, path: %s ' % (mode, path)
+        # Mock
         return True
 
     def chown(self, path, uid, gid):
         if debug: print 'chown uid: %s, gid: %s, path: %s ' % (uid, gid, path)
+        # Mock
         return True
 
     def getattr(self, path, fh=None):
         if debug: print 'getattr path: %s' % (path)
 
-        if (path.endswith('/')) or ('/.' in path):
+        # If path is a directory
+        if path.endswith('/'):
             s = {'st_ctime': 1450647916.0, 'st_mtime': 1450647886.0, 'st_nlink': 19, 'st_mode': 16877, 'st_size': 0, 'st_gid': 20, 'st_uid': 501, 'st_atime': 1455426628.0}
+        # Else if path is a hidden file
+        elif ('/.' in path):
+            s = {'st_ctime': 1450647916.0, 'st_mtime': 1450647886.0, 'st_nlink': 19, 'st_mode': 33188, 'st_size': 0, 'st_gid': 20, 'st_uid': 501, 'st_atime': 1455426628.0}
+        # Else if path is anything else, assume it's an issue entry
         else:
             path_content = self._contents(path)
-            size = len(path_content)
-            s = {'st_ctime': 1450647916.0, 'st_mtime': 1450647886.0, 'st_nlink': 19, 'st_mode': 33188, 'st_size': size, 'st_gid': 20, 'st_uid': 501, 'st_atime': 1455426628.0}
+            s = {'st_ctime': 1450647916.0, 'st_mtime': 1450647886.0, 'st_nlink': 19, 'st_mode': 33188, 'st_size': len(path_content), 'st_gid': 20, 'st_uid': 501, 'st_atime': 1455426628.0}
         return s
 
     def readdir(self, path, fh):
