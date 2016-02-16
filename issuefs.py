@@ -13,6 +13,8 @@ import keyring
 from github3 import login
 from fuse import FUSE, FuseOSError, Operations
 
+debug = False
+
 class IssueFS(Operations):
     def __init__(self, repo, username, password):
         self.repo = repo
@@ -29,19 +31,19 @@ class IssueFS(Operations):
         return path
 
     def _contents(self, path):
-        print '_contents path: %s' % (path)
+        if debug: print '_contents path: %s' % (path)
 
         try:
             issue = int(path.strip('/').split('_')[0])
         except:
             return False
 
-        print '_contents issue: %s' % (issue)
+        if debug: print '_contents issue: %s' % (issue)
 
         gh = login(self.username, self.password)
         issue = gh.issue(self.username, self.repo, issue)
         issue_contents = '%s \n %s' % (issue.title, issue.body)
-        print '_contents issue_contents: %s' % (issue_contents)
+        if debug: print '_contents issue_contents: %s' % (issue_contents)
         return issue_contents
 
     def _hash(self, value):
@@ -52,20 +54,20 @@ class IssueFS(Operations):
     # ==================
 
     def access(self, path, mode):
-        # print 'access mode: %s, path: %s ' % (mode, path)
+        # if debug: print 'access mode: %s, path: %s ' % (mode, path)
         if False:
             raise FuseOSError(errno.EACCES)
 
     def chmod(self, path, mode):
-        print 'chmod mode: %s, path: %s ' % (mode, path)
+        if debug: print 'chmod mode: %s, path: %s ' % (mode, path)
         return True
 
     def chown(self, path, uid, gid):
-        print 'chown uid: %s, gid: %s, path: %s ' % (uid, gid, path)
+        if debug: print 'chown uid: %s, gid: %s, path: %s ' % (uid, gid, path)
         return True
 
     def getattr(self, path, fh=None):
-        print 'getattr path: %s' % (path)
+        if debug: print 'getattr path: %s' % (path)
 
         if (path.endswith('/')) or ('/.' in path):
             s = {'st_ctime': 1450647916.0, 'st_mtime': 1450647886.0, 'st_nlink': 19, 'st_mode': 16877, 'st_size': 0, 'st_gid': 20, 'st_uid': 501, 'st_atime': 1455426628.0}
@@ -76,7 +78,7 @@ class IssueFS(Operations):
         return s
 
     def readdir(self, path, fh):
-        print 'readdir path: %s' % (path)
+        if debug: print 'readdir path: %s' % (path)
 
         if path == '/':
             dirents = ['.', '..']
@@ -87,14 +89,14 @@ class IssueFS(Operations):
                 dirents.append(this_issue)
 
             for r in dirents:
-                print r
+                if debug: print r
                 if r.endswith('.pyc'):
                     pass
                 else:
                     yield r
 
     def readlink(self, path):
-        print 'readlink path: %s' % (path)
+        if debug: print 'readlink path: %s' % (path)
         pathname = os.readlink(self._full_path(path))
         if pathname.startswith("/"):
             # Path name is absolute, sanitize it.
@@ -103,77 +105,77 @@ class IssueFS(Operations):
             return pathname
 
     def mknod(self, path, mode, dev):
-        print 'mknod path: %s' % (path)
+        if debug: print 'mknod path: %s' % (path)
         return
 
     def rmdir(self, path):
-        print 'rmdir path: %s' % (path)
+        if debug: print 'rmdir path: %s' % (path)
         full_path = self._full_path(path)
         return
 
     def mkdir(self, path, mode):
-        print 'mkdir path: %s' % (path)
+        if debug: print 'mkdir path: %s' % (path)
         return
 
     def statfs(self, path):
-        print 'statfs path: %s' % (path)
+        if debug: print 'statfs path: %s' % (path)
         return {'f_bsize': 1048576, 'f_bavail': 0, 'f_favail': 7745916, 'f_files': 3, 'f_frsize': 4096, 'f_blocks': 29321728, 'f_ffree': 7745916, 'f_bfree': 0, 'f_namemax': 255, 'f_flag': 0}
 
     def unlink(self, path):
-        print 'unlink path: %s' % (path)
+        if debug: print 'unlink path: %s' % (path)
         return
 
     def symlink(self, name, target):
-        print 'symlink path: %s' % (path)
+        if debug: print 'symlink path: %s' % (path)
         return
 
     def rename(self, old, new):
-        print 'rename path: %s' % (path)
+        if debug: print 'rename path: %s' % (path)
         return
 
     def link(self, target, name):
-        print 'link path: %s' % (path)
+        if debug: print 'link path: %s' % (path)
         return
 
     def utimens(self, path, times=None):
-        print 'utimens path: %s' % (path)
+        if debug: print 'utimens path: %s' % (path)
         return
 
     # File methods
     # ============
 
     def open(self, path, flags):
-        print 'open path: %s' % (path)
+        if debug: print 'open path: %s' % (path)
         return True
 
     def create(self, path, mode, fi=None):
-        print 'create path: %s' % (path)
+        if debug: print 'create path: %s' % (path)
         return
 
     def read(self, path, length, offset, fh):
-        print 'read data from %s - %s:%s' % (path, length, offset)
+        if debug: print 'read data from %s - %s:%s' % (path, length, offset)
         the_contents = self._contents(path)
         the_contents = str(the_contents[offset:offset+length])
         return the_contents
 
     def write(self, path, buf, offset, fh):
-        print 'write path: %s' % (path)
+        if debug: print 'write path: %s' % (path)
         return True
 
     def truncate(self, path, length, fh=None):
-        print 'truncate path: %s' % (path)
+        if debug: print 'truncate path: %s' % (path)
         return True
 
     def flush(self, path, fh):
-        print 'flush path: %s' % (path)
+        if debug: print 'flush path: %s' % (path)
         return True
 
     def release(self, path, fh):
-        print 'release path: %s' % (path)
+        if debug: print 'release path: %s' % (path)
         return True
 
     def fsync(self, path, fdatasync, fh):
-        print 'fsync path: %s' % (path)
+        if debug: print 'fsync path: %s' % (path)
         return True
 
 @click.command()
