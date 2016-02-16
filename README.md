@@ -1,6 +1,6 @@
 # issuefs
 
-## Exposing Github issues as filesystem objects since yesterday.
+Exposing Github issues as filesystem objects since yesterday.
 
 ### Dependencies
 
