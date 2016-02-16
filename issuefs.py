@@ -21,15 +21,6 @@ class IssueFS(Operations):
         self.username = username
         self.password = password
 
-    # Helpers
-    # =======
-
-    def _full_path(self, partial):
-        if partial.startswith("/"):
-            partial = partial[1:]
-        path = os.path.join(self.repo, partial)
-        return path
-
     def _contents(self, path):
         if debug: print '_contents path: %s' % (path)
 
@@ -97,12 +88,7 @@ class IssueFS(Operations):
 
     def readlink(self, path):
         if debug: print 'readlink path: %s' % (path)
-        pathname = os.readlink(self._full_path(path))
-        if pathname.startswith("/"):
-            # Path name is absolute, sanitize it.
-            return os.path.relpath(pathname, self.repo)
-        else:
-            return pathname
+        return path
 
     def mknod(self, path, mode, dev):
         if debug: print 'mknod path: %s' % (path)
@@ -110,8 +96,7 @@ class IssueFS(Operations):
 
     def rmdir(self, path):
         if debug: print 'rmdir path: %s' % (path)
-        full_path = self._full_path(path)
-        return
+        return path
 
     def mkdir(self, path, mode):
         if debug: print 'mkdir path: %s' % (path)
@@ -119,6 +104,8 @@ class IssueFS(Operations):
 
     def statfs(self, path):
         if debug: print 'statfs path: %s' % (path)
+        # Mocked up statfs return values for now
+        # Mostly nonsensical but functional
         return {'f_bsize': 1048576, 'f_bavail': 0, 'f_favail': 7745916, 'f_files': 3, 'f_frsize': 4096, 'f_blocks': 29321728, 'f_ffree': 7745916, 'f_bfree': 0, 'f_namemax': 255, 'f_flag': 0}
 
     def unlink(self, path):
