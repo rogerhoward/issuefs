@@ -22,6 +22,8 @@ class IssueFS(Operations):
         self.password = password
 
     def _contents(self, path):
+        # Return contents of a given path
+        # For now, return the issue title and body concatenated
         if debug: print '_contents path: %s' % (path)
 
         try:
@@ -31,8 +33,11 @@ class IssueFS(Operations):
 
         if debug: print '_contents issue: %s' % (issue)
 
+        # Get Github issue
         gh = login(self.username, self.password)
         issue = gh.issue(self.username, self.repo, issue)
+
+        # Concatanate issue title and body and return as file content
         issue_contents = '%s \n %s' % (issue.title, issue.body)
         if debug: print '_contents issue_contents: %s' % (issue_contents)
         return issue_contents
