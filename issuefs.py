@@ -88,7 +88,7 @@ class IssueFS(Operations):
 
             # Add issue "filename" to children array
             for issue in gh.iter_repo_issues(self.username, self.repo):
-                issue_filename = '{}_{}'.format(issue.number, issue.title)[:255]
+                issue_filename = '{}_{}.txt'.format(issue.number, issue.title)[:255]
                 children.append(issue_filename)
 
             # Return a generator object for each entry in children
