@@ -162,9 +162,9 @@ class IssueFS(Operations):
 
     def read(self, path, length, offset, fh):
         if debug: print 'read data from %s - %s:%s' % (path, length, offset)
-        the_contents = self._contents(path)
-        the_contents = str(the_contents[offset:offset+length])
-        return the_contents
+        # Retrieve contents, apply read offsets, and return
+        # Added str() explicitly to return a byte array which read() expects
+        return str(self._contents(path)[offset:offset+length])
 
     def write(self, path, buf, offset, fh):
         if debug: print 'write path: %s' % (path)
