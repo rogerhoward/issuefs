@@ -35,7 +35,7 @@ class IssueFS(Operations):
         issue = gh.issue(self.username, self.repo, issue)
 
         # Concatanate issue title and body and return as file content
-        issue_contents = '{} \n {}'.format(issue.title, issue.body)
+        issue_contents = 'Title: {}\n-----\n{}\n'.format(issue.title, issue.body)
         if debug: print('_contents issue_contents: {}'.format(issue_contents))
         return issue_contents
 
