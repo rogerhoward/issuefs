@@ -78,20 +78,23 @@ class IssueFS(Operations):
     def readdir(self, path, fh):
         if debug: print 'readdir path: %s' % (path)
 
+        # If root of device...
         if path == '/':
-            dirents = ['.', '..']
+            # Add . and .. entries to children array
+            children = ['.', '..']
 
+            # Connect to Github
             gh = login(self.username, self.password)
-            for issue in gh.iter_repo_issues(self.username, self.repo):
-                this_issue = ('%s_%s' % (issue.number, issue.title))[:255]
-                dirents.append(this_issue)
 
-            for r in dirents:
-                if debug: print r
-                if r.endswith('.pyc'):
-                    pass
-                else:
-                    yield r
+            # Add issue "filename" to children array
+            for issue in gh.iter_repo_issues(self.username, self.repo):
+                issue_filename = ('%s_%s' % (issue.number, issue.title))[:255]
+                children.append(issue_filename)
+
+            # Return a generator object for each entry in children
+            for entry in children:
+                if debug: print entry
+                yield entry
 
     def readlink(self, path):
         if debug: print 'readlink path: %s' % (path)
