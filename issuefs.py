@@ -25,6 +25,7 @@ class IssueFS(Operations):
         # For now, return the issue title and body concatenated
         if debug: print '_contents path: %s' % (path)
 
+        # Extract issue from filepath, coerce to int; if fails, abort
         try:
             issue = int(path.strip('/').split('_')[0])
         except:
