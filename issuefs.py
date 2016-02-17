@@ -98,18 +98,22 @@ class IssueFS(Operations):
 
     def readlink(self, path):
         if debug: print 'readlink path: %s' % (path)
+        # Mock
         return path
 
     def mknod(self, path, mode, dev):
         if debug: print 'mknod path: %s' % (path)
+        # Mock
         return
 
     def rmdir(self, path):
         if debug: print 'rmdir path: %s' % (path)
+        # Mock
         return path
 
     def mkdir(self, path, mode):
         if debug: print 'mkdir path: %s' % (path)
+        # Mock
         return
 
     def statfs(self, path):
@@ -120,22 +124,27 @@ class IssueFS(Operations):
 
     def unlink(self, path):
         if debug: print 'unlink path: %s' % (path)
+        # Mock
         return
 
     def symlink(self, name, target):
         if debug: print 'symlink path: %s' % (path)
+        # Mock
         return
 
     def rename(self, old, new):
         if debug: print 'rename path: %s' % (path)
+        # Mock
         return
 
     def link(self, target, name):
         if debug: print 'link path: %s' % (path)
+        # Mock
         return
 
     def utimens(self, path, times=None):
         if debug: print 'utimens path: %s' % (path)
+        # Mock
         return
 
     # File methods
@@ -143,10 +152,12 @@ class IssueFS(Operations):
 
     def open(self, path, flags):
         if debug: print 'open path: %s' % (path)
+        # Mock
         return True
 
     def create(self, path, mode, fi=None):
         if debug: print 'create path: %s' % (path)
+        # Mock
         return
 
     def read(self, path, length, offset, fh):
@@ -157,22 +168,27 @@ class IssueFS(Operations):
 
     def write(self, path, buf, offset, fh):
         if debug: print 'write path: %s' % (path)
+        # Mock
         return True
 
     def truncate(self, path, length, fh=None):
         if debug: print 'truncate path: %s' % (path)
+        # Mock
         return True
 
     def flush(self, path, fh):
         if debug: print 'flush path: %s' % (path)
+        # Mock
         return True
 
     def release(self, path, fh):
         if debug: print 'release path: %s' % (path)
+        # Mock
         return True
 
     def fsync(self, path, fdatasync, fh):
         if debug: print 'fsync path: %s' % (path)
+        # Mock
         return True
 
 @click.command()
