@@ -201,8 +201,11 @@ class IssueFS(Operations):
 @click.option('--password', prompt='Password',
               help='The password for the Github repo.')
 def new_issuefs(mount, repo, username, password):
+    # Ensure mountpoint already exists before mounting a FS to it
     if not os.path.exists(mount):
         os.makedirs(mount)
+
+    # Create new FUSE filesystem at designated mountpoint using IssueFS
     FUSE(IssueFS(repo, username, password), mount, nothreads=True, foreground=True)
 
 
