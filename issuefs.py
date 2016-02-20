@@ -3,8 +3,7 @@
 # Based on MIT-licensed code from:
 # https://www.stavros.io/posts/python-fuse-filesystem/
 
-import os, sys, errno
-import click
+import os, sys, errno, click
 from github3 import login
 from fuse import FUSE, FuseOSError, Operations
 
