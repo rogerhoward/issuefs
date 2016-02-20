@@ -26,7 +26,7 @@ class IssueFS(Operations):
         try:
             issue = int(path.strip('/').split('_')[0])
         except:
-            return False
+            return ''
 
         if debug: print('_contents issue: {}'.format(issue))
 
@@ -163,7 +163,7 @@ class IssueFS(Operations):
     def read(self, path, length, offset, fh):
         if debug: print('read path: {} - {}:{}'.format(path, length, offset))
         # Retrieve contents, apply read offsets, and return
-        # Added str() explicitly to return a byte array which read() expects
+        # Added str() explicitly to return byte array which read() expects
         return str(self._contents(path)[offset:offset+length])
 
     def write(self, path, buf, offset, fh):
@@ -206,8 +206,12 @@ def new_issuefs(mount, repo, username, password):
         os.makedirs(mount)
 
     # Create new FUSE filesystem at designated mountpoint using IssueFS
-    FUSE(IssueFS(repo, username, password), mount, nothreads=True, foreground=True)
-
+    FUSE(IssueFS(
+         repo, username, password),
+         mount,
+         nothreads=True,
+         foreground=True
+         )
 
 if __name__ == '__main__':
     new_issuefs()
