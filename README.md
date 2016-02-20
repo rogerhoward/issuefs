@@ -1,4 +1,4 @@
-# issuefs
+# IssueFS
 
 Exposing Github issues as filesystem objects since yesterday.
 
